@@ -43,17 +43,26 @@ INSTALLED_APPS = [
     # Local apps
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
+    "articles.apps.ArticlesConfig",  # new
 ]
+
+TIME_ZONE = "Asia/Kolkata"  # new
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",  # new
+    "django_session_timeout.middleware.SessionTimeoutMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+SESSION_EXPIRE_SECONDS = 60  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 1  # group by minute
+SESSION_TIMEOUT_REDIRECT = "login"
 
 ROOT_URLCONF = "django_project.urls"
 
@@ -136,4 +145,27 @@ LOGOUT_REDIRECT_URL = "home"  # new
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"  # new
 CRISPY_TEMPLATE_PACK = "bootstrap5"  # new
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # new
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # new
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
+
+# Sendinblue
+
+DEFAULT_FROM_EMAIL = "naphtaldanny@gmail.com"
+EMAIL_HOST = "smtp-relay.sendinblue.com"
+EMAIL_HOST_USER = "naphtaldanny@gmail.com"
+EMAIL_HOST_PASSWORD = "pxfbsqnGKtJEBgUM"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+# Send Grid
+
+# DEFAULT_FROM_EMAIL = "naphtaldanny@gmail.com"
+# EMAIL_HOST = "smtp.sendgrid.net"
+# EMAIL_HOST_USER = "apikey"
+# EMAIL_HOST_PASSWORD = (
+#     "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"
+# )
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
