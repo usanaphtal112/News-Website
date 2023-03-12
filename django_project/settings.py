@@ -77,8 +77,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
 ]
 
-<<<<<<<<< Temporary merge branch 1
-=========
 CSRF_TRUSTED_ORIGINS = ["https://news-website-production-5b6e.up.railway.app"]
 
 SESSION_EXPIRE_SECONDS = 60  # 1 hour
