@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+
+from environs import Env  # new
+
+env = Env()  # new
+env.read_env()  # new
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-w(q@(y*$wgspjg5noua9!&$30y#myvczxcd6%++xvt@5myh248"
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True  # For local server only
+DEBUG = env.bool("DEBUG", default=False)  # During deployment it must e false
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -36,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",  # new
     "django.contrib.staticfiles",
     # 3rd Party
     "crispy_forms",  # new
@@ -50,8 +58,9 @@ TIME_ZONE = "Asia/Kolkata"  # new
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",  # new
-    "django_session_timeout.middleware.SessionTimeoutMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_session_timeout.middleware.SessionTimeoutMiddleware",  # new
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -88,12 +97,26 @@ WSGI_APPLICATION = "django_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
+# DATABASES = {
+#     "default": {
+#         #'ENGINE': 'django.db.backends.sqlite3',
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "railway",
+#         "USER": "postgres",
+#         "PASSWORD": "DA0dVATzKeNKfmIYrQt7",
+#         "HOST": "containers-us-west-104.railway.app",
+#         "PORT": "5837",
+#     }
+# }
+
+DATABASES = {"default": env.dj_db_url("DATABASE_URL")}
 
 
 # Password validation
@@ -131,6 +154,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]  # new
+STATIC_ROOT = BASE_DIR / "staticfiles"  # new
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"  # new
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
