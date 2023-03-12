@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # 3rd Party
     "crispy_forms",  # new
     "crispy_bootstrap5",  # new
+    "corsheaders",  # New
     # Local apps
     "accounts.apps.AccountsConfig",
     "pages.apps.PagesConfig",
@@ -60,12 +61,20 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django_session_timeout.middleware.SessionTimeoutMiddleware",  # new
+    "corsheaders.middleware.CorsMiddleware",  # New
     "whitenoise.middleware.WhiteNoiseMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://news-website-production-5b6e.up.railway.app",
+    "https://*.railway.app",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
 ]
 
 SESSION_EXPIRE_SECONDS = 60  # 1 hour
