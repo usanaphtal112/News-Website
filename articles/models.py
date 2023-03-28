@@ -25,11 +25,12 @@ class Article(models.Model):
 
 class Comment(models.Model):  # new
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=140)
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
+    comment = models.CharField(max_length=10000, null=True, blank=True)
+    comment_author = models.CharField(max_length=255, null=True, blank=True)
+    # author = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     on_delete=models.CASCADE,
+    # )
 
     def __str__(self):
         return self.comment

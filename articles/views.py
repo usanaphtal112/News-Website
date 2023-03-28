@@ -14,7 +14,9 @@ from django.views.generic.detail import SingleObjectMixin  # new
 from django.urls import reverse_lazy, reverse  # new
 
 
-class ArticleListView(LoginRequiredMixin, ListView):  # new
+class ArticleListView(
+    ListView
+):  # (LoginRequiredMixin --> must be included if you want to list it for only logged in user)new
     model = Article
     template_name = "articles/article_list.html"
 
@@ -49,7 +51,7 @@ class CommentPost(SingleObjectMixin, FormView):  # new
         return reverse("article_detail", kwargs={"pk": article.pk})
 
 
-class ArticleDetailView(LoginRequiredMixin, View):  # new
+class ArticleDetailView(View):  # new
     def get(self, request, *args, **kwargs):
         view = CommentGet.as_view()
         return view(request, *args, **kwargs)
